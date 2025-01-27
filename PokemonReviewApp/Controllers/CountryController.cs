@@ -70,17 +70,17 @@ namespace PokemonReviewApp.Controllers
             if (countryCreate == null)
                 return BadRequest(ModelState);
 
-            var country = _countryRepository.GetCountries().Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.Trim().ToUpper()).FirstOrDefault(); 
+            var country = _countryRepository.GetCountries().Where(c => c.Name.Trim().ToUpper() == countryCreate.Name.Trim().ToUpper()).FirstOrDefault();
             if (country != null)
             {
                 ModelState.AddModelError("", $"Country {countryCreate.Name} already exists");
                 return StatusCode(404, ModelState);
             }
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var countryMap = _mapper.Map<Country>(countryCreate);
-            if(!_countryRepository.CreateCountry(countryMap))
+            if (!_countryRepository.CreateCountry(countryMap))
             {
                 ModelState.AddModelError("", $"Something went wrong saving {countryMap.Name}");
                 return StatusCode(500, ModelState);
@@ -88,5 +88,41 @@ namespace PokemonReviewApp.Controllers
 
             return Ok("Country Created");
         }
+
+        [HttpPut("{countryId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult UpdateCountry(int countryId, [FromBody] CountryDto countryUpdate)
+        {
+            if (countryUpdate == null)
+                return BadRequest(ModelState);
+
+            if (!_countryRepository.CountryExists(countryId))
+            {
+                ModelState.AddModelError("", "Country does not exist");
+                return BadRequest(ModelState);
+            }
+
+            if (countryId != countryUpdate.Id)
+            {
+                ModelState.AddModelError("", "Id mismatch");
+                return BadRequest(ModelState);
+            }
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var countryMap = _mapper.Map<Country>(countryUpdate);
+
+            if (!_countryRepository.UpdateCountry(countryMap))
+            {
+                ModelState.AddModelError("", $"Something went wrong updating {countryMap.Name}");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Country Updated");
+        }
+
     }
 }
