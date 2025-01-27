@@ -38,10 +38,10 @@ namespace PokemonReviewApp.Controllers
 
         public IActionResult GetOwner(int ownerId)
         {
-            if(_ownerRepositry.OwnerExist(ownerId))
+            if(!_ownerRepositry.OwnerExist(ownerId))
                 return NotFound();
 
-            var owner = _mapper.Map<List<OwnerDto>>(_ownerRepositry.GetOwner(ownerId));
+            var owner = _mapper.Map<OwnerDto>(_ownerRepositry.GetOwner(ownerId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -55,7 +55,7 @@ namespace PokemonReviewApp.Controllers
 
         public IActionResult GetPokemonByOwner(int ownerId)
         {
-            if(_ownerRepositry.OwnerExist(ownerId))
+            if(!_ownerRepositry.OwnerExist(ownerId))
                 return NotFound();
             
             var owner = _mapper.Map<List<PokemonDto>>(_ownerRepositry.GetPokemonByOwner(ownerId));
