@@ -11,10 +11,12 @@ namespace PokemonReviewApp.Controllers
     public class PokemonController : Controller
     {
         private readonly IPokemonRepository _pokemonRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
-        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
+        public PokemonController(IPokemonRepository pokemonRepository, IReviewRepository reviewRepository, IMapper mapper)
         {
             _pokemonRepository = pokemonRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
@@ -122,6 +124,41 @@ namespace PokemonReviewApp.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok("Pokemon Updated!");
+        }
+
+        [HttpDelete("{pokeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult DeletePokemon(int pokeId)
+        {
+
+            if (!_pokemonRepository.PokemonExists(pokeId))
+            {
+                ModelState.AddModelError("", $"Pokemon {pokeId} does not exist");
+                return StatusCode(404, ModelState);
+            }
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var pokemon = _pokemonRepository.GetPokemon(pokeId);
+            var reviwes = _reviewRepository.GetReviewsOfPokemon(pokeId);
+
+            if (!_reviewRepository.DeleteReviews([.. reviwes]))
+            {
+                ModelState.AddModelError("", $"Something went wrong deleting the reviews for the pokemon {pokemon.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            if (!_pokemonRepository.DeletePokeon(pokemon))
+            {
+                ModelState.AddModelError("", $"Something went wrong deleting the pokemon {pokemon.Name}");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Pokemon Deleted!");
         }
 
     }
