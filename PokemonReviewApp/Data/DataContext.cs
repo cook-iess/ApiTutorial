@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Data.Common;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<IdentityUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
@@ -24,6 +26,7 @@ namespace PokemonReviewApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<PokemonCategory>()
                 .HasKey(pc => new { pc.PokemonId, pc.CategoryId });
             modelBuilder.Entity<PokemonCategory>()
