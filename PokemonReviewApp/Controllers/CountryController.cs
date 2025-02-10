@@ -34,8 +34,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{countryId}")]
-        [ProducesResponseType(200, Type = typeof(Country))]
-        [ProducesResponseType(400)]
         public IActionResult GetCountry(int countryId)
         {
             if (!_countryRepository.CountryExists(countryId))
@@ -49,8 +47,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("owners/{ownerId}")]
-        [ProducesResponseType(200, Type = typeof(Country))]
-        [ProducesResponseType(400)]
 
         public IActionResult GetCountryOfAnOwner(int ownerId)
         {
@@ -62,8 +58,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
 
         public IActionResult CreateCountry([FromBody] CountryDto countryCreate)
         {
@@ -90,9 +84,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPut("{countryId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
 
         public IActionResult UpdateCountry(int countryId, [FromBody] CountryDto countryUpdate)
         {
@@ -125,9 +116,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{countryId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
 
         public IActionResult DeleteCountry(int countryId)
         {
