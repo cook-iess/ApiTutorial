@@ -78,29 +78,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( options =>
 {
     options.SwaggerDoc("v1", new() { Title = "PokemonReviewApp", Version = "v1" });
-    ////options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    ////{
-    ////    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-    ////    Description = "Please enter token",
-    ////    Name = "Authorization",
-    ////    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-    ////    BearerFormat = "JWT",
-    ////    Scheme = "bearer"
-    ////});
-    //options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    //{
-    //    {
-    //        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    //        {
-    //            Reference = new Microsoft.OpenApi.Models.OpenApiReference
-    //            {
-    //                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-    //                Id = "Bearer"
-    //            }
-    //        },
-    //        []
-    //    }
-    //});
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            []
+        }
+    });
 });
 builder.Services.AddDbContext<DataContext>(options =>
 {
