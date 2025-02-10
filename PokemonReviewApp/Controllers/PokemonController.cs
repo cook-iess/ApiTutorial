@@ -25,7 +25,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
         public IActionResult GetPokemons()
         {
             var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
@@ -37,8 +36,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{pokeId}")]
-        [ProducesResponseType(200, Type = typeof(Pokemon))]
-        [ProducesResponseType(400)]
         public IActionResult GetPokemon(int pokeId)
         {
             if(!_pokemonRepository.PokemonExists(pokeId))
@@ -52,9 +49,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{pokeId}/rating")]
-        [ProducesResponseType(200, Type = typeof(decimal))]
-        [ProducesResponseType(400)]
-
         public IActionResult GetPokemonRating(int pokeId)
         {
             if(!_pokemonRepository.PokemonExists(pokeId))
@@ -68,9 +62,6 @@ namespace PokemonReviewApp.Controllers
             return Ok(rating);
         }
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-
         public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto pokemonCreate)
         {
             if(pokemonCreate == null)
@@ -97,10 +88,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPut("{pokeId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult UpdatePokemon(int pokeId, [FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto pokemonUpdate)
         {
             if (pokemonUpdate == null)
@@ -131,10 +118,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{pokeId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult DeletePokemon(int pokeId)
         {
 
