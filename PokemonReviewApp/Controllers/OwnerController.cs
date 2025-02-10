@@ -22,8 +22,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Owner>))]
-
         public IActionResult GetOwners()
         {
             var owners = _mapper.Map<List<OwnerDto>>(_ownerRepositry.GetOwners());
@@ -35,9 +33,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{ownerId}")]
-        [ProducesResponseType(200, Type = typeof(Owner))]
-        [ProducesResponseType(400)]
-
         public IActionResult GetOwner(int ownerId)
         {
             if(!_ownerRepositry.OwnerExist(ownerId))
@@ -52,9 +47,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{ownerId}/pokemon")]
-        [ProducesResponseType(200, Type = typeof(Owner))]
-        [ProducesResponseType(400)]
-
         public IActionResult GetPokemonByOwner(int ownerId)
         {
             if(!_ownerRepositry.OwnerExist(ownerId))
@@ -68,9 +60,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-
         public IActionResult CreateOwner([FromQuery] int countryId ,[FromBody]OwnerDto ownerCreate)
         {
             if (ownerCreate == null)
@@ -99,10 +88,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPut("{ownerId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult UpdateOwner(int ownerId, [FromBody] OwnerDto ownerUpdate)
         {
             if (ownerUpdate == null)
@@ -135,10 +120,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{ownerId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult DeleteOwner(int ownerId)
         {
             if (!ModelState.IsValid)
