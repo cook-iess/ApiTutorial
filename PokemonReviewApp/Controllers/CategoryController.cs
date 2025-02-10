@@ -32,8 +32,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{categoryId}")]
-        [ProducesResponseType(200, Type = typeof(Category))]
-        [ProducesResponseType(400)]
         public IActionResult GetCategory(int categoryId)
         {
             if (!_categoryRepository.CategoryExists(categoryId))
@@ -47,8 +45,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("pokemon/{categoryId}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
-        [ProducesResponseType(400)]
 
         public IActionResult GetPokemonByCategoryID(int categoryId)
         {
@@ -60,8 +56,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
 
         public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
         {
@@ -88,10 +82,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPut("{categoryId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult UpdateCategory(int categoryId, [FromBody] CategoryDto categoryUpdate)
         {
             if (categoryUpdate == null)
@@ -124,10 +114,6 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{categoryId}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-
         public IActionResult DeleteCategory(int categoryId)
         {
             if (!ModelState.IsValid)
