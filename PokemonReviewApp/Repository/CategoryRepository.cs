@@ -1,4 +1,5 @@
-﻿using PokemonReviewApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PokemonReviewApp.Data;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
 
@@ -11,9 +12,9 @@ namespace PokemonReviewApp.Repository
         {
             _context = context;
         }
-        public bool CategoryExists(int id)
+        public async Task<bool> CategoryExists(int id)
         {
-            return _context.Categories.Any(c => c.Id == id);
+            return await _context.Categories.AnyAsync(c => c.Id == id);
         }
 
         public bool CreateCategory(Category category)
@@ -40,7 +41,7 @@ namespace PokemonReviewApp.Repository
 
         public ICollection<Pokemon> GetPokemonByCategory(int categoryId)
         {
-             return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c=>c.Pokemon).ToList();
+            return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
         }
 
         public bool Save()

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PokemonReviewApp.Dto;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
-using PokemonReviewApp.Repository;
 
 namespace PokemonReviewApp.Controllers
 {
@@ -31,9 +30,9 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpGet("{categoryId}")]
-        public IActionResult GetCategory(int categoryId)
+        public async Task<IActionResult> GetCategory(int categoryId)
         {
-            if (!_categoryRepository.CategoryExists(categoryId))
+            if (!await _categoryRepository.CategoryExists(categoryId))
                 return NotFound();
 
             var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(categoryId));
@@ -81,7 +80,7 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpPut("{categoryId}")]
-        public IActionResult UpdateCategory(int categoryId, [FromBody] CategoryDto categoryUpdate)
+        public async Task<IActionResult> UpdateCategory(int categoryId, [FromBody] CategoryDto categoryUpdate)
         {
             if (categoryUpdate == null)
                 return BadRequest(ModelState);
@@ -92,7 +91,7 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!_categoryRepository.CategoryExists(categoryId))
+            if (!await _categoryRepository.CategoryExists(categoryId))
             {
                 ModelState.AddModelError("", "Category does not exist");
                 return NotFound();
@@ -113,12 +112,12 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{categoryId}")]
-        public IActionResult DeleteCategory(int categoryId)
+        public async Task<IActionResult> DeleteCategory(int categoryId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_categoryRepository.CategoryExists(categoryId))
+            if (!await _categoryRepository.CategoryExists(categoryId))
             {
                 ModelState.AddModelError("", "Category does not exist");
                 return NotFound();
