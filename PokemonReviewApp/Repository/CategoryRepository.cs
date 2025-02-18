@@ -29,19 +29,19 @@ namespace PokemonReviewApp.Repository
             return await Save();
         }
 
-        public ICollection<Category> GetCategories()
+        public async Task<ICollection<Category>> GetCategories()
         {
-            return _context.Categories.ToList();
+            return await _context.Categories.ToListAsync();
         }
 
-        public Category GetCategory(int id)
+        public async Task<Category> GetCategory(int id)
         {
-            return _context.Categories.Where(e => e.Id == id).FirstOrDefault();
+            return await _context.Categories.Where(e => e.Id == id).FirstOrDefaultAsync() ?? throw new InvalidOperationException("Category not found");
         }
 
-        public ICollection<Pokemon> GetPokemonByCategory(int categoryId)
+        public async Task<ICollection<Pokemon>> GetPokemonByCategory(int categoryId)
         {
-            return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
+            return await _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToListAsync();
         }
 
         public async Task<bool> Save()
