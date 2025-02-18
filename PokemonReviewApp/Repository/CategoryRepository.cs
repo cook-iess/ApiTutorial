@@ -17,16 +17,16 @@ namespace PokemonReviewApp.Repository
             return await _context.Categories.AnyAsync(c => c.Id == id);
         }
 
-        public bool CreateCategory(Category category)
+        public async Task<bool> CreateCategory(Category category)
         {
-            _context.Add(category);
-            return Save();
+            await _context.AddAsync(category);
+            return await Save();
         }
 
-        public bool DeleteCategory(Category category)
+        public async Task<bool> DeleteCategory(Category category)
         {
             _context.Remove(category);
-            return Save();
+            return await Save();
         }
 
         public ICollection<Category> GetCategories()
@@ -44,15 +44,15 @@ namespace PokemonReviewApp.Repository
             return _context.PokemonCategories.Where(e => e.CategoryId == categoryId).Select(c => c.Pokemon).ToList();
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public bool UpdateCategory(Category category)
+        public async Task<bool> UpdateCategory(Category category)
         {
             _context.Update(category);
-            return Save();
+            return await Save();
         }
     }
 }

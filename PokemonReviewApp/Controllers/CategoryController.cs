@@ -55,7 +55,7 @@ namespace PokemonReviewApp.Controllers
 
         [HttpPost]
 
-        public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryDto categoryCreate)
         {
             if (categoryCreate == null)
                 return BadRequest(ModelState);
@@ -70,7 +70,7 @@ namespace PokemonReviewApp.Controllers
 
             var categoryMap = _mapper.Map<Category>(categoryCreate);
 
-            if (!_categoryRepository.CreateCategory(categoryMap))
+            if (!await _categoryRepository.CreateCategory(categoryMap))
             {
                 ModelState.AddModelError("", $"Something went wrong saving the category {categoryMap.Name}");
                 return StatusCode(500, ModelState);
