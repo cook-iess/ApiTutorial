@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PokemonReviewApp.Data;
 using PokemonReviewApp.Dto;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
-using PokemonReviewApp.Repository;
 
 namespace PokemonReviewApp.Controllers
 {
@@ -21,7 +20,9 @@ namespace PokemonReviewApp.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Country>))]
         public IActionResult GetCountries()
         {
@@ -102,7 +103,7 @@ namespace PokemonReviewApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var countryMap = _mapper.Map<Country>(countryUpdate);
@@ -119,7 +120,7 @@ namespace PokemonReviewApp.Controllers
 
         public IActionResult DeleteCountry(int countryId)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (!_countryRepository.CountryExists(countryId))
